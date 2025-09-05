@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <nav class="sidebar">
+      <div class="logo">Evissa</div>
+      <ul class="nav-links">
+        <li><a href="dashboard.html"><i class="fas fa-house"></i> Dashboard</a></li>
+        <li><a href="reservation.html"><i class="fas fa-calendar-alt"></i> Reservations</a></li>
+        <li><a href="dues.html"><i class="fas fa-circle-check"></i> Dues</a></li>
+        <li><a href="laborers.html"><i class="fas fa-briefcase"></i> Laborers</a></li>
+        <li><a href="messages.html"><i class="fas fa-comments"></i> Messages</a></li>
+        <li><a href="accounts.html"><i class="fas fa-users"></i> Accounts</a></li>
+        <li><a href="hoa.html"><i class="fas fa-sitemap"></i> HOA Officers</a></li>
+      </ul>
+    </nav>
+
+    <main class="main-content">
+      <header class="header">
+        <h1>Dashboard</h1>
+      </header>
+
+      <section class="upcoming-reservation section-box">
+        <h2 style="text-align: left;">UPCOMING <br> RESERVATIONS</h2>
+        <ul id="upcoming-reservations-list"></ul>
+      </section>
+
+      <section class="payment-dues section-box">
+        <div class="header-row">
+          <h2 style="text-align: left;">Payment Dues</h2>
+          <div class="payment-status">
+            <button class="btn-paid">Paid</button>
+            <button class="btn-unpaid">Unpaid</button>
+          </div>
+        </div>
+        <table class="table-style" id="payment-dues-table">
+          <tbody></tbody>
+        </table>
+      </section>
+
+      <section class="top-complaints section-box">
+        <h2 style="text-align: left;">Top Complaints This Month</h2>
+        <ul id="top-complaints-list"></ul>
+      </section>
+    </main>
+
+    <aside class="right-widgets">
+      <div class="right-widgets-header">
+        <input type="text" placeholder="Search..." />
+        <div class="profile-menu">
+          <div class="profile-avatar" id="profileToggleAside">
+            <i class="fas fa-user-circle"></i>
+          </div>
+          <div class="dropdown" id="dropdownMenuAside">
+            <ul>
+              <li class="admin-name">Loading...</li>
+              <li><a href="#" id="profileBtnAside"><i class="fas fa-user"></i> Profile</a></li>
+              <li><a href="login.html" id="logoutBtnAside"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="account-approval widget-box">
+       <div class="header-row">
+          <h3>Account Approval</h3>
+          <span style="color:#999; font-size:12px;">PENDING</span>
+        </div>
+        <table class="table-style" id="account-approval-table">
+          <thead>
+            <tr>
+              <th>Block</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div class="laborers widget-box">
+        <div class="header-row">
+          <h3>Laborers</h3>
+          <span style="color:#999; font-size:12px;">PENDING</span>
+        </div>
+        <table class="table-style">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <button class="add-laborer">Add New Laborer</button>
+    </aside>
+  </div>
+
+  <div id="profileModal" class="modal">
+    <div class="modal-content">
+      <h3>Profile</h3>
+      <form id="profileForm">
+        <div class="form-row">
+          <div class="form-column">
+            <label>First Name</label>
+            <input type="text" id="profileFirstName">
+          </div>
+          <div class="form-column">
+            <label>Last Name</label>
+            <input type="text" id="profileLastName">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-column">
+            <label>Password</label>
+            <input type="password" id="profilePassword" placeholder="********">
+          </div>
+          <div class="form-column">
+            <label>Birth Date</label>
+            <input type="date" id="profileBirthDate">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-column">
+            <label>New Password</label>
+            <input type="password" id="profileNewPassword">
+          </div>
+          <div class="form-column">
+            <label>Confirm New Password</label>
+            <input type="password" id="profileConfirmPassword">
+          </div>
+        </div>
+        <button type="submit" class="submit-btn">SAVE</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="userModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn">&times;</span>
+      <h3>User Details</h3>
+      <div id="userDetails"></div>
+      <div class="modal-buttons">
+        <button class="btn approve" id="approveBtn">Approve</button>
+        <button class="btn decline" id="declineBtn">Decline</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="laborerModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn">&times;</span>
+      <h3>Laborer Details</h3>
+      <div id="laborerDetails"></div>
+      <div class="modal-buttons">
+        <button id="approveLaborerBtn" class="btn approve">Approve</button>
+        <button id="declineLaborerBtn" class="btn decline">Decline</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="addLaborerModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" id="closeAddLaborerModal">&times;</span>
+      <h3>Add New Laborer</h3>
+      <form id="addLaborerForm">
+        <div class="form-row">
+          <div class="form-column">
+            <input type="text" id="laborerFirstname" placeholder="First Name" required>
+            <input type="text" id="laborerLastname" placeholder="Last Name" required>
+            <input type="date" id="laborerBdate" required>
+          </div>
+          <div class="form-column">
+            <input type="text" id="laborerContact" placeholder="Contact Number" required>
+            <input type="text" id="laborerType" placeholder="Type of Work" required>
+            <select id="laborerIdType" required>
+              <option value="" disabled selected>Select ID Type</option>
+              <option value="Passport">Passport</option>
+              <option value="National ID">National ID (PhilID)</option>
+              <option value="UMID">Unified Multi-Purpose ID (UMID)</option>
+              <option value="Driver's License">Driver's License</option>
+              <option value="SSS ID">SSS ID</option>
+              <option value="PhilHealth ID">PhilHealth ID</option>
+              <option value="Postal ID">Postal ID</option>
+              <option value="Voter's ID">Voter's ID</option>
+              <option value="PRC ID">PRC ID</option>
+              <option value="Other">Other Government ID</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-column">
+            <label for="idImageUpload" class="upload-label">
+              <i class="fas fa-upload"></i> Upload ID Image
+            </label>
+            <input type="file" id="idImageUpload" accept="image/*" style="display: none;">
+            <div id="imagePreview" class="image-preview" style="display: none;">
+              <img id="previewImg" src="#" alt="ID Preview">
+              <button type="button" id="removeImageBtn" class="remove-image-btn">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-row buttons-row">
+          <button type="button" class="cancel-btn">CANCEL</button>
+          <button type="submit" class="submit-btn">ADD</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getFirestore, collection, getDocs, query, where, doc, updateDoc, addDoc, serverTimestamp, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAidTEv40n7YXzDojKCP2WO9ifi-n-N1GY",
+      authDomain: "evissa-e-community.firebaseapp.com",
+      projectId: "evissa-e-community",
+      storageBucket: "evissa-e-community.appspot.com",
+      messagingSenderId: "407448688902",
+      appId: "1:407448688902:web:4010dd5d57bc3103a56687",
+      measurementId: "G-2N4HMXGSR1"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+    const storage = getStorage(app);
+
+    let currentUserId = null;
+    let currentLaborerId = null;
+    let allDues = [];
+
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        if (userDoc.exists()) {
+          const data = userDoc.data();
+          document.querySelector(".dropdown .admin-name").textContent = `${data.firstname} ${data.lastname}`;
+        }
+      } else {
+        window.location.href = "login.html";
+      }
+    });
+
+    document.getElementById("logoutBtnAside").addEventListener("click", (e) => {
+      e.preventDefault();
+      signOut(auth).then(() => window.location.href = "login.html");
+    });
+
+    function toggleDropdown() {
+      const menu = document.getElementById("dropdownMenuAside");
+      menu.style.display = (menu.style.display === "block") ? "none" : "block";
+    }
+
+    document.getElementById("profileToggleAside").addEventListener("click", toggleDropdown);
+
+    document.getElementById("profileBtnAside").addEventListener("click", (e) => {
+      e.preventDefault();
+      document.getElementById("profileModal").style.display = "flex";
+    });
+
+    document.getElementById("profileForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const firstName = document.getElementById("profileFirstName").value;
+      const lastName = document.getElementById("profileLastName").value;
+      document.querySelector(".dropdown .admin-name").textContent = `${firstName} ${lastName}`;
+      document.getElementById("profileModal").style.display = "none";
+      alert("Profile updated successfully!");
+    });
+
+    window.addEventListener("click", (e) => {
+      if (e.target === document.getElementById("profileModal")) {
+        document.getElementById("profileModal").style.display = "none";
+      }
+    });
+
+    async function loadAccountApprovals() {
+      const tableBody = document.querySelector("#account-approval-table tbody");
+      tableBody.innerHTML = "";
+      const q = query(collection(db, "users"), where("status", "==", "pending"));
+      const snap = await getDocs(q);
+
+      snap.forEach(docSnap => {
+        const data = docSnap.data();
+        const displayDate = data.created_at?.toDate ? data.created_at.toDate().toLocaleDateString() : 'N/A';
+        const row = document.createElement("tr");
+        row.innerHTML = `<td>${data.block||'N/A'}</td><td>${displayDate}</td>`;
+        row.style.cursor="pointer";
+        row.onclick = ()=>openUserModal(docSnap.id, data);
+        tableBody.appendChild(row);
+      });
+    }
+
+    function openUserModal(userId,user){
+      currentUserId = userId;
+      document.getElementById("userDetails").innerHTML = `
+        <p><b>Name:</b> ${user.firstname} ${user.lastname}</p>
+        <p><b>Email:</b> ${user.email}</p>
+        <p><b>Block:</b> ${user.block||'N/A'}</p>
+        <p><b>Lot:</b> ${user.lot||'N/A'}</p>`;
+      document.getElementById("userModal").style.display="flex";
+    }
+
+    function closeUserModal(){ document.getElementById("userModal").style.display="none"; currentUserId=null; }
+
+    document.getElementById("approveBtn").onclick=async()=>{
+      if(!currentUserId) return;
+      await updateDoc(doc(db,"users",currentUserId),{status:"approved"});
+      alert("User Approved");
+      closeUserModal();
+      loadAccountApprovals();
+    };
+
+    document.getElementById("declineBtn").onclick=async()=>{
+      if(!currentUserId) return;
+      await updateDoc(doc(db,"users",currentUserId),{status:"declined"});
+      alert("User Declined");
+      closeUserModal();
+      loadAccountApprovals();
+    };
+async function loadLaborers() {
+  const tbody = document.querySelector(".laborers table tbody");
+  tbody.innerHTML = "";
+  const q = query(collection(db, "laborers"), where("status", "==", "pending"));
+  const snap = await getDocs(q);
+
+  for (const docSnap of snap.docs) {
+    const data = docSnap.data();
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${data.firstname || ''} ${data.middlename || ''} ${data.lastname || ''}</td>
+      <td>${data.specific_job || ''}</td>
+      <td>${data.birth_date || 'N/A'}</td>
+    `;
+    row.style.cursor = "pointer";
+    row.addEventListener("click", () => openLaborerModal(docSnap.id, data));
+    tbody.appendChild(row);
+  }
+}
+
+function openLaborerModal(id, data) {
+  currentLaborerId = id;
+
+  let details = `
+    <p><b>Laborer ID:</b> ${data.laborer_id || 'N/A'}</p>
+    <p><b>Name:</b> ${data.firstname || ''} ${data.middlename || ''} ${data.lastname || ''}</p>
+    <p><b>Contact Number:</b> ${data.contact || 'N/A'}</p>
+    <p><b>Birth Date:</b> ${data.birth_date || 'N/A'}</p>
+    <p><b>Main Category:</b> ${data.main_category || 'N/A'}</p>
+    <p><b>Specific Job:</b> ${data.specific_job || 'N/A'}</p>
+    <p><b>ID Type:</b> ${data.id_type || 'N/A'}</p>
+  `;
+
+  // Only show Block & Lot if type is homeowner
+  if (data.type === "homeowner") {
+    details += `
+      <p><b>Block:</b> ${data.block || 'N/A'}</p>
+      <p><b>Lot:</b> ${data.lot || 'N/A'}</p>
+    `;
+  }
+
+  if (data.resume) {
+    details += `<p><b>Resume:</b> <a href="${data.resume}" target="_blank">View Resume</a></p>`;
+  }
+
+  if (data.id_file) {
+    details += `<p><b>Valid ID:</b> <a href="${data.id_file}" target="_blank">View ID</a></p>`;
+  }
+
+  document.getElementById("laborerDetails").innerHTML = details;
+  document.getElementById("laborerModal").style.display = "flex";
+}
+
+function closeLaborerModal() {
+  document.getElementById("laborerModal").style.display = "none";
+  currentLaborerId = null;
+}
+
+document.getElementById("approveLaborerBtn").addEventListener("click", async () => {
+  if (!currentLaborerId) return;
+  await updateDoc(doc(db, "laborers", currentLaborerId), {
+    status: "approved",
+    approved_date: serverTimestamp()
+  });
+  alert("Laborer Approved");
+  closeLaborerModal();
+  loadLaborers();
+});
+
+document.getElementById("declineLaborerBtn").addEventListener("click", async () => {
+  if (!currentLaborerId) return;
+  await updateDoc(doc(db, "laborers", currentLaborerId), {
+    status: "declined",
+    approved_date: serverTimestamp()
+  });
+  alert("Laborer Declined");
+  closeLaborerModal();
+  loadLaborers();
+});
+
+   async function loadPaymentDues(filter = "all") {
+  const tableBody = document.querySelector("#payment-dues-table tbody");
+  tableBody.innerHTML = "";
+  
+  try {
+    const usersQuery = query(collection(db, "users"), where("status", "==", "approved"));
+    const usersSnapshot = await getDocs(usersQuery);
+    
+    allDues = [];
+    
+    for (const userDoc of usersSnapshot.docs) {
+      const userData = userDoc.data();
+      const block = userData.block || 'N/A';
+      const lot = userData.lot || 'N/A';
+      
+      const duesRef = collection(db, "users", userDoc.id, "dues");
+      const duesSnapshot = await getDocs(duesRef);
+      
+      duesSnapshot.forEach((dueDoc) => {
+        const dueData = dueDoc.data();
+        const dueDate = dueData.dueDate?.toDate ? dueData.dueDate.toDate() : null;
+        const formattedDate = dueDate ? dueDate.toLocaleDateString() : 'N/A';
+        const amount = dueData.amount || 0;
+        const status = dueData.status || 'Pending';
+        
+        allDues.push({
+          block,
+          lot,
+          amount,
+          status,
+          formattedDate
+        });
+      });
+    }
+    
+    let filteredDues = allDues;
+    if (filter === "paid") {
+      filteredDues = allDues.filter(due => due.status.toLowerCase() === "paid");
+    } else if (filter === "unpaid") {
+      filteredDues = allDues.filter(due => due.status.toLowerCase() === "pending");
+    }
+    
+    filteredDues.forEach(due => {
+      const row = document.createElement("tr");
+      
+      const blockCell = document.createElement("td");
+      blockCell.textContent = ` ${due.block} ${due.lot}`.toUpperCase();
+      
+      const statusCell = document.createElement("td");
+      // Change "Pending" to "Unpaid" and make it red
+      if (due.status.toLowerCase() === "pending") {
+        statusCell.textContent = "Unpaid";
+        statusCell.style.color = "red";
+        statusCell.style.fontWeight = "bold";
+      } else {
+        statusCell.textContent = due.status;
+        statusCell.style.color = "green";
+      }
+      
+      const amountCell = document.createElement("td");
+      amountCell.textContent = `₱${due.amount.toLocaleString()}`;
+      
+      row.appendChild(blockCell);
+      row.appendChild(statusCell);
+      row.appendChild(amountCell);
+      
+      tableBody.appendChild(row);
+    });
+    
+    if (tableBody.children.length === 0) {
+      const row = document.createElement("tr");
+      const cell = document.createElement("td");
+      cell.colSpan = 3;
+      cell.textContent = "No payment dues found";
+      cell.style.textAlign = "center";
+      row.appendChild(cell);
+      tableBody.appendChild(row);
+    }
+  } catch (error) {
+    console.error("Error loading payment dues:", error);
+    
+    const row = document.createElement("tr");
+    const cell = document.createElement("td");
+    cell.colSpan = 3;
+    cell.textContent = "Error loading payment dues";
+    cell.style.textAlign = "center";
+    cell.style.color = "red";
+    row.appendChild(cell);
+    tableBody.appendChild(row);
+  }
+}
+
+document.querySelector(".btn-paid").addEventListener("click", () => {
+  loadPaymentDues("paid");
+});
+
+document.querySelector(".btn-unpaid").addEventListener("click", () => {
+  loadPaymentDues("unpaid");
+});
+
+    document.querySelector("#userModal .close-btn").addEventListener("click", closeUserModal);
+    document.querySelector("#laborerModal .close-btn").addEventListener("click", closeLaborerModal);
+    document.getElementById("closeAddLaborerModal").addEventListener("click", closeAddLaborerModal);
+    document.querySelector(".cancel-btn").addEventListener("click", closeAddLaborerModal);
+
+    window.addEventListener('load', ()=>{
+      loadAccountApprovals();
+      loadLaborers();
+      loadPaymentDues();
+    });
+    // Add this code to your existing script section
+
+// Get the modal and button elements
+const addLaborerBtn = document.querySelector('.add-laborer');
+const addLaborerModal = document.getElementById('addLaborerModal');
+const addLaborerForm = document.getElementById('addLaborerForm');
+const closeAddLaborerModalBtn = document.getElementById('closeAddLaborerModal');
+const cancelBtn = document.querySelector('.cancel-btn');
+const idImageUpload = document.getElementById('idImageUpload');
+const imagePreview = document.getElementById('imagePreview');
+const previewImg = document.getElementById('previewImg');
+const removeImageBtn = document.getElementById('removeImageBtn');
+
+// Open the add laborer modal
+addLaborerBtn.addEventListener('click', () => {
+  addLaborerModal.style.display = 'flex';
+});
+
+// Close the modal when clicking on close button
+closeAddLaborerModalBtn.addEventListener('click', closeAddLaborerModal);
+cancelBtn.addEventListener('click', closeAddLaborerModal);
+
+// Close the modal when clicking outside of it
+window.addEventListener('click', (e) => {
+  if (e.target === addLaborerModal) {
+    closeAddLaborerModal();
+  }
+});
+
+function closeAddLaborerModal() {
+  addLaborerModal.style.display = 'none';
+  addLaborerForm.reset();
+  imagePreview.style.display = 'none';
+}
+
+// Handle ID image upload preview
+idImageUpload.addEventListener('change', function() {
+  const file = this.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      previewImg.src = e.target.result;
+      imagePreview.style.display = 'block';
+    }
+    reader.readAsDataURL(file);
+  }
+});
+
+// Remove the selected image
+removeImageBtn.addEventListener('click', function() {
+  idImageUpload.value = '';
+  imagePreview.style.display = 'none';
+});
+
+// Handle form submission
+addLaborerForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  try {
+    // Get form values
+    const firstname = document.getElementById('laborerFirstname').value;
+    const lastname = document.getElementById('laborerLastname').value;
+    const birth_date = document.getElementById('laborerBdate').value;
+    const contact = document.getElementById('laborerContact').value;
+    const specific_job = document.getElementById('laborerType').value;
+    const id_type = document.getElementById('laborerIdType').value;
+    const id_file = idImageUpload.files[0];
+    
+    // Generate a unique laborer ID
+    const laborer_id = 'LAB' + Date.now();
+    
+    // Upload ID image if selected
+    let idFileUrl = '';
+    if (id_file) {
+      const storageRef = ref(storage, `laborer_ids/${laborer_id}_${id_file.name}`);
+      const snapshot = await uploadBytes(storageRef, id_file);
+      idFileUrl = await getDownloadURL(snapshot.ref);
+    }
+    
+    // Add laborer to Firestore
+    await addDoc(collection(db, "laborers"), {
+      laborer_id,
+      firstname,
+      lastname,
+      birth_date,
+      contact,
+      specific_job,
+      id_type,
+      id_file: idFileUrl,
+      status: "approved", // Automatically approve when added by admin
+      approved_date: serverTimestamp(),
+      created_at: serverTimestamp()
+    });
+    
+    alert('Laborer added successfully!');
+    closeAddLaborerModal();
+    
+    // Refresh the laborers list
+    loadLaborers();
+    
+  } catch (error) {
+    console.error('Error adding laborer:', error);
+    alert('Error adding laborer. Please try again.');
+  }
+});
+  </script>
+</body>
+</html>
